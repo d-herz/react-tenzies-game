@@ -29,6 +29,7 @@ export default function App() {
     return <Die
       key={num.id}
       value={num.value}
+      isHeld={num.isHeld}
     />
   })
   
