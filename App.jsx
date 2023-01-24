@@ -6,6 +6,12 @@ import {nanoid} from "nanoid"
 export default function App() {
   const [dice, setDice] = React.useState(allNewDice())
 
+  const [tenzies, setTenzies] = React.useState(false) 
+
+  React.useEffect(() => {
+    console.log("Dice state changed mah dude")
+  }, [dice])
+
   //helper function added to DRY code after rollDice() had to utilize the same code from allNewDice()
   function generateNewDie() {
     return {
@@ -14,7 +20,6 @@ export default function App() {
       id: nanoid()
     }
   }
-
 
   //Creates a 10 element integer array randomly populated with numbers 1-6 
   function allNewDice() {
