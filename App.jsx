@@ -9,16 +9,11 @@ export default function App() {
 
   const [tenzies, setTenzies] = React.useState(false) 
 
+  //Win condition logic checked everytime [dice] changes
   React.useEffect(() => {
-
     const allHeld = dice.every(die => die.isHeld);
     const firstVal = dice[0].value;
     const allSameVal = dice.every( die => die.value === firstVal)
-
-    // const diceSet = new Set()
-    // dice.forEach( x => {
-    //   return diceSet.add(x.value)
-    // })
 
     if (allSameVal && allHeld) {
       setTenzies(true)
@@ -46,14 +41,20 @@ export default function App() {
 
   //CB for button press event:
   function rollDice() {
-    // setDice(allNewDice())
-    setDice(prevDice => {
-      return prevDice.map(die => {
-        return die.isHeld ?
-          die :
-          generateNewDie()
+
+    if (!tenzies) {
+      setDice(prevDice => {
+        return prevDice.map(die => {
+          return die.isHeld ?
+            die :
+            generateNewDie()
+        })
       })
-    })
+    } else {
+      setTenzies(false)
+      setDice(allNewDice())
+    }
+
   }
 
   //function to pass down to each die element
@@ -78,7 +79,7 @@ export default function App() {
     />
   })
 
-  const buttonText = tenzies ? "New Game" : "Roll"
+  const buttonText = tenzies ? "New Game" : "Roll";
   
   return (
     <main>
