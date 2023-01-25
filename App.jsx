@@ -9,7 +9,13 @@ export default function App() {
   const [tenzies, setTenzies] = React.useState(false) 
 
   React.useEffect(() => {
-    console.log("Dice state changed mah dude")
+    const diceSet = new Set()
+    dice.forEach( x => {
+      return diceSet.add(x.value)
+    })
+    if (diceSet.size === 1 && dice.every(die => die.isHeld)){
+      console.log("Winnnn")
+    }
   }, [dice])
 
   //helper function added to DRY code after rollDice() had to utilize the same code from allNewDice()
