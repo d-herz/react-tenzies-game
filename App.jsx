@@ -6,6 +6,7 @@ import Confetti from 'react-confetti/'
 
 export default function App() {
   const [dice, setDice] = React.useState(allNewDice())
+  const [rollCount, setRollCount] = React.useState(0)
   const [tenzies, setTenzies] = React.useState(false) 
 
   //Win condition logic checked everytime [dice] changes
@@ -39,7 +40,6 @@ export default function App() {
 
   //CB for button press event:
   function rollDice() {
-
     if (!tenzies) {
       setDice(prevDice => {
         return prevDice.map(die => {
@@ -48,8 +48,10 @@ export default function App() {
             generateNewDie()
         })
       })
+      setRollCount( prevCount => prevCount + 1)
     } else {
       setTenzies(false)
+      setRollCount(0)
       setDice(allNewDice())
     }
   }
@@ -82,7 +84,7 @@ export default function App() {
     <main>
       {tenzies && <Confetti />}
       <h1 className="title">Tenzies</h1>
-      <p className="instructions">Roll until all dice are the same. Click each die to freeze it at its current value between rolls.</p>
+      <p className="instructions">Roll until all dice are the same. Click each die to hold it at its current value between rolls.</p>
       <div className="dice-container">
         {diceElement}
       </div>
@@ -92,6 +94,7 @@ export default function App() {
       >
         {buttonText}
       </button>
+      <p className="roll--counter">Roll Count = {rollCount} </p>
     </main>
   )
 }
