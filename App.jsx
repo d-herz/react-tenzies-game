@@ -6,7 +6,6 @@ import Confetti from 'react-confetti/'
 
 export default function App() {
   const [dice, setDice] = React.useState(allNewDice())
-
   const [tenzies, setTenzies] = React.useState(false) 
 
   //Win condition logic checked everytime [dice] changes
@@ -17,7 +16,6 @@ export default function App() {
 
     if (allSameVal && allHeld) {
       setTenzies(true)
-      console.log("Winnnn")
     }
   }, [dice])
 
@@ -54,7 +52,6 @@ export default function App() {
       setTenzies(false)
       setDice(allNewDice())
     }
-
   }
 
   //function to pass down to each die element
