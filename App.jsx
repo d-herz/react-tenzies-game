@@ -1,6 +1,7 @@
 import React from 'react'
 import Die from "./components/Die"
-import {nanoid} from "nanoid"
+import { nanoid } from "nanoid"
+import Confetti from 'react-confetti/'
 
 
 export default function App() {
@@ -9,16 +10,23 @@ export default function App() {
   const [tenzies, setTenzies] = React.useState(false) 
 
   React.useEffect(() => {
-    const diceSet = new Set()
-    dice.forEach( x => {
-      return diceSet.add(x.value)
-    })
-    if (diceSet.size === 1 && dice.every(die => die.isHeld)){
+
+    const allHeld = dice.every(die => die.isHeld);
+    const firstVal = dice[0].value;
+    const allSameVal = dice.every( die => die.value === firstVal)
+
+    // const diceSet = new Set()
+    // dice.forEach( x => {
+    //   return diceSet.add(x.value)
+    // })
+
+    if (allSameVal && allHeld) {
+      setTenzies(true)
       console.log("Winnnn")
     }
   }, [dice])
 
-  //helper function added to DRY code after rollDice() had to utilize the same code from allNewDice()
+  //helper function 
   function generateNewDie() {
     return {
       value: Math.ceil(Math.random() * 6),
@@ -36,7 +44,7 @@ export default function App() {
     return diceArr
   }
 
-  //CB for button press event: calls setState(), checks old value (of state dice array) so we can see if any are being "held", if held, keep that die, otherwise return a new die.  Added helper function "generateNewDie()" so we did not have to repeat the same object definition
+  //CB for button press event:
   function rollDice() {
     // setDice(allNewDice())
     setDice(prevDice => {
@@ -48,7 +56,7 @@ export default function App() {
     })
   }
 
-  //function to pass down to each die element, passing in the parameter as ID. This allows us to avoide "derived state"
+  //function to pass down to each die element
   function holdDice(id) {
     setDice(prevDice => {
       return prevDice.map((die) => {
@@ -59,7 +67,7 @@ export default function App() {
     })
   }
 
-  //Mapping the "dice" array (from state) and returning a component for each element with the proper props
+  //Mapping the "dice" array (from state) and returning a component for each
   const diceElement = dice.map(( num, ind) => {
     return <Die
       key={num.id}
@@ -69,9 +77,12 @@ export default function App() {
       toggleHold={holdDice}
     />
   })
+
+  const buttonText = tenzies ? "New Game" : "Roll"
   
   return (
     <main>
+      {tenzies && <Confetti />}
       <h1 className="title">Tenzies</h1>
       <p className="instructions">Roll until all dice are the same. Click each die to freeze it at its current value between rolls.</p>
       <div className="dice-container">
@@ -81,7 +92,7 @@ export default function App() {
         className='roll--dice'
         onClick={rollDice}
       >
-        Roll
+        {buttonText}
       </button>
     </main>
   )
